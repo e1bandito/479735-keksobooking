@@ -6,12 +6,12 @@ var TYPES = ['flat', 'house', 'bungalo'];
 
 var FEATURES_LIST = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var ROOMS_COUNT ={
+var ROOMS_COUNT = {
   MIN: 1,
   MAX: 5
 };
 
-var PRICE_COUNT ={
+var PRICE_COUNT = {
   MIN: 1000,
   MAX: 1000000
 };
@@ -123,7 +123,48 @@ var createAdverts = function () {
   return advertsArray;
 };
 
-console.log(createAdverts());
+var adverts = createAdverts();
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
+
+
+// Функция генерации пина
+var renderPin = function (advert) {
+  var pinWidth = 40;
+  var pinHeight = 40;
+  var indent = {
+    x: pinWidth / 2,
+    y: pinHeight
+  };
+
+  var pin = document.createElement('button');
+  var avatar = document.createElement('img');
+  pin.classList.add('map__pin');
+  pin.style.left = advert.location.x - indent.x + 'px';
+  pin.style.top = advert.location.y - indent.y + 'px';
+  avatar.src = advert.author.avatar;
+  avatar.width = pinWidth;
+  avatar.height = pinHeight;
+  pin.appendChild(avatar);
+  return pin;
+};
+
+// Генерирует массив с DOM элементами пинов
+var pinsArray = [];
+for (var l = 0; l < adverts.length; l++) {
+  pinsArray.push(renderPin(adverts[l]));
+}
+
+// Создает фрагмент для пинов
+var fragment = document.createDocumentFragment();
+
+// добавил в фрагмент пины
+for (var m = 0; m < ADVERTS_COUNT; m++) {
+  fragment.appendChild(renderPin(adverts[m]));
+}
+
+// Добавил фрагмент на страницу
+var mapPins = map.querySelector('.map__pins');
+
+mapPins.appendChild(fragment);
