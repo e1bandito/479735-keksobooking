@@ -33,6 +33,20 @@ var LOCATION_AREA = {
 var ADVERTS_COUNT = 8;
 var lastTitle = 0;
 
+var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+var filtersContainer = document.querySelector('map__filters-container');
+
+var card = cardTemplate.cloneNode(true);
+var cardTitle = card.querySelector('h3');
+var cardAddress = card.querySelector('small');
+var cardPrice = card.querySelector('.popup__price');
+var cardType = card.querySelector('h4');
+var cardRooms = card.querySelector('p:nth-of-type(3)');
+var cardTime = card.querySelector('p:nth-of-type(4)');
+var cardFeatures = card.querySelector('.popup__features');
+var cardDescription = card.querySelector('p:nth-of-type(5)');
+var userAvatar = card.querySelector('.popup__avatar');
+
 var getNumberFromRange = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -129,7 +143,7 @@ var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
 
-// Функция генерации пина
+// Генерирует пины
 var renderPin = function (advert) {
   var pinWidth = 40;
   var pinHeight = 40;
@@ -159,12 +173,82 @@ for (var l = 0; l < adverts.length; l++) {
 // Создает фрагмент для пинов
 var fragment = document.createDocumentFragment();
 
-// добавил в фрагмент пины
+// Добавляет в фрагмент пины
 for (var m = 0; m < ADVERTS_COUNT; m++) {
   fragment.appendChild(renderPin(adverts[m]));
 }
 
-// Добавил фрагмент на страницу
+// Добавляет фрагмент на страницу
 var mapPins = map.querySelector('.map__pins');
 
 mapPins.appendChild(fragment);
+
+// Передает тип жилья
+var getType = function (type) {
+  var typeOfHouse = '';
+  if (type === 'flat') {
+    typeOfHouse = 'квартира';
+  } else {
+    if (type === 'house') {
+      typeOfHouse = 'дом';
+    } else {
+      if (type === 'bungalo') {
+        typeOfHouse = 'бунгало';
+      }
+    }
+  }
+  return typeOfHouse;
+};
+
+// Передает количество комнат и гостей
+var getRoomsAndGuests = function () {
+  var guestsEnd = '';
+  var roomsEnd = '';
+
+  if (adverts[0].offer.guests === 1) {
+    guestsEnd = 'гостя';
+  } else {
+    guestsEnd = 'гостей';
+  }
+
+  if (adverts[0].offer.rooms === 1) {
+    roomsEnd = 'комната';
+  } else {
+    if (adverts[0].offer.rooms === 5) {
+      roomsEnd = 'комнат';
+    } else {
+      roomsEnd = 'комнаты';
+    }
+  }
+  return adverts[0].offer.rooms + ' ' + roomsEnd + ' для ' + adverts[0].offer.guests + ' ' + guestsEnd;
+};
+
+// Передает преимущества
+var checkFeatures = function (featureList) {
+  while (featureList.hasChildNodes()) {
+    featureList.removeChild(featureList.lastChild);
+  }
+  for (var n = 0; n < adverts[0].offer.features.length; n++) {
+    var li = document.createElement('li');
+    li.className = 'feature feature--' + adverts[0].offer.features[n];
+    featureList.appendChild(li);
+  }
+  return featureList;
+};
+
+// Наполняет карту контентом
+var advertCard = function () {
+  cardTitle.textContent = adverts[0].offer.title;
+  cardAddress.textContent = adverts[0].offer.address;
+  cardPrice.textContent = adverts[0].offer.price + '\t\u20BD/ночь';
+  cardType.textContent = getType(adverts[0].offer.type);
+  cardRooms.textContent = getRoomsAndGuests();
+  cardTime.textContent = 'Заезд после ' + adverts[0].offer.checkin + ', ' + 'выезд до ' + adverts[0].offer.checkout;
+  checkFeatures(cardFeatures);
+  cardDescription.textContent = adverts[0].offer.description;
+  userAvatar.src = adverts[0].author.avatar;
+  return card;
+};
+
+// Вставляет карту на страницу
+map.insertBefore(advertCard(), filtersContainer);
