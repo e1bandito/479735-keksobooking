@@ -26,8 +26,8 @@ var MAX_GUESTS = 10;
 var LOCATION_AREA = {
   MIN_X: 300,
   MAX_X: 900,
-  MIN_Y: 300,
-  MAX_Y: 900
+  MIN_Y: 100,
+  MAX_Y: 500
 };
 
 var ADVERTS_COUNT = 8;
