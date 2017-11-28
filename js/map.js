@@ -1,14 +1,48 @@
 'use strict';
 
-var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+var TITLES = [
+  'Большая уютная квартира',
+  'Маленькая неуютная квартира',
+  'Огромный прекрасный дворец',
+  'Маленький ужасный дворец',
+  'Красивый гостевой домик',
+  'Некрасивый негостеприимный домик',
+  'Уютное бунгало далеко от моря',
+  'Неуютное бунгало по колено в воде'
+];
 
-var TYPES = ['flat', 'house', 'bungalo'];
+var TYPES = [
+  'flat',
+  'house',
+  'bungalo'
+];
 
-var FEATURES_LIST = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var FEATURES_LIST = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner'
+];
+
+var MIN_FEATURES_COUNT = 1;
+
+var ROOMS_DICT = {
+  'default': 'комнаты',
+  '1': 'комната',
+  '5': 'комнат'
+};
 
 var ROOMS_COUNT = {
   MIN: 1,
   MAX: 5
+};
+
+var TYPE_DICT = {
+  flat: 'квартира',
+  house: 'дом',
+  bungalo: 'бунгало'
 };
 
 var PRICE_COUNT = {
@@ -99,7 +133,7 @@ var randomSort = function () {
 var getFeaturesList = function () {
   var featuresArrayCopy = FEATURES_LIST.slice();
   featuresArrayCopy.sort(randomSort);
-  var featuresCount = getNumberFromRange(1, FEATURES_LIST.length);
+  var featuresCount = getNumberFromRange(MIN_FEATURES_COUNT, FEATURES_LIST.length);
   return featuresArrayCopy.slice(0, featuresCount);
 };
 
@@ -191,13 +225,13 @@ mapPins.appendChild(fragment);
 var getType = function (type) {
   var typeOfHouse = '';
   if (type === 'flat') {
-    typeOfHouse = 'квартира';
+    typeOfHouse = TYPE_DICT.flat;
   } else {
     if (type === 'house') {
-      typeOfHouse = 'дом';
+      typeOfHouse = TYPE_DICT.house;
     } else {
       if (type === 'bungalo') {
-        typeOfHouse = 'бунгало';
+        typeOfHouse = TYPE_DICT.bungalo;
       }
     }
   }
@@ -206,20 +240,8 @@ var getType = function (type) {
 
 // Передает количество комнат и гостей
 var getRoomsAndGuests = function () {
-  var guestsEnd = '';
-  var roomsEnd = '';
-
-  guestsEnd = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
-
-  if (currentAdvert.offer.rooms === 1) {
-    roomsEnd = 'комната';
-  } else {
-    if (currentAdvert.offer.rooms === 5) {
-      roomsEnd = 'комнат';
-    } else {
-      roomsEnd = 'комнаты';
-    }
-  }
+  var guestsEnd = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
+  var roomsEnd = ROOMS_DICT[currentAdvert.offer.rooms] || ROOMS_DICT.default;
   return currentAdvert.offer.rooms + ' ' + roomsEnd + ' для ' + currentAdvert.offer.guests + ' ' + guestsEnd;
 };
 
