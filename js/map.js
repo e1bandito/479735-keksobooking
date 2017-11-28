@@ -39,7 +39,7 @@ var ROOMS_COUNT = {
   MAX: 5
 };
 
-var TYPE_DICT = {
+var HOUSE_TYPES = {
   flat: 'квартира',
   house: 'дом',
   bungalo: 'бунгало'
@@ -223,18 +223,7 @@ mapPins.appendChild(fragment);
 
 // Передает тип жилья
 var getType = function (type) {
-  var typeOfHouse = '';
-  if (type === 'flat') {
-    typeOfHouse = TYPE_DICT.flat;
-  } else {
-    if (type === 'house') {
-      typeOfHouse = TYPE_DICT.house;
-    } else {
-      if (type === 'bungalo') {
-        typeOfHouse = TYPE_DICT.bungalo;
-      }
-    }
-  }
+  var typeOfHouse = HOUSE_TYPES[type];
   return typeOfHouse;
 };
 
