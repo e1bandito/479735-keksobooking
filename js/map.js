@@ -51,6 +51,15 @@ var getNumberFromRange = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
 
+var getRandomNumber = function (max) {
+  return Math.floor(Math.random() * max);
+};
+
+var getRandomElement = function (array) {
+  var randomIndex = getRandomNumber(array.length);
+  return array[randomIndex];
+};
+
 var getUserAvatar = function () {
   var beginPath = 'img/avatars/user0';
   var endPath = '.png';
@@ -69,36 +78,30 @@ var getTitle = function () {
 };
 
 var getTypeOfHouse = function () {
-  var typeIndex = getNumberFromRange(0, TYPES.length - 1);
-  return TYPES[typeIndex];
+  var typeIndex = getRandomElement(TYPES);
+  return typeIndex;
 };
 
 var getCheckInTime = function () {
-  var checkInIndex = getNumberFromRange(0, CHECKIN_TIMES.length - 1);
-  return CHECKIN_TIMES[checkInIndex];
+  var typeIndex = getRandomElement(CHECKIN_TIMES);
+  return typeIndex;
 };
 
 var getCheckOutTime = function () {
-  var checkOutIndex = getNumberFromRange(0, CHECKOUT_TIMES.length - 1);
-  return CHECKOUT_TIMES[checkOutIndex];
+  var typeIndex = getRandomElement(CHECKOUT_TIMES);
+  return typeIndex;
 };
 
-function getFeaturesList() {
-  var featuresArrayLength = getNumberFromRange(1, FEATURES_LIST.length);
-  var featuresArray = [];
-  var arrayOfIndexes = [];
+var randomSort = function () {
+  return Math.random() - 0.5;
+};
 
-  for (var i = 0; i < FEATURES_LIST.length; i++) {
-    arrayOfIndexes.push(i);
-  }
-
-  for (var j = 0; j < featuresArrayLength; j++) {
-    var randomIndex = arrayOfIndexes[getNumberFromRange(0, arrayOfIndexes.length - 1)];
-    featuresArray.push(FEATURES_LIST[randomIndex]);
-    arrayOfIndexes.splice(arrayOfIndexes.indexOf(randomIndex), 1);
-  }
-  return featuresArray;
-}
+var getFeaturesList = function () {
+  var featuresArrayCopy = FEATURES_LIST.slice();
+  featuresArrayCopy.sort(randomSort);
+  var featuresCount = getNumberFromRange(1, FEATURES_LIST.length);
+  return featuresArrayCopy.slice(0, featuresCount);
+};
 
 var advertGenerate = function () {
   var advert = {
@@ -138,6 +141,7 @@ var createAdverts = function () {
 };
 
 var adverts = createAdverts();
+var currentAdvert = adverts[0];
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -205,22 +209,18 @@ var getRoomsAndGuests = function () {
   var guestsEnd = '';
   var roomsEnd = '';
 
-  if (adverts[0].offer.guests === 1) {
-    guestsEnd = 'гостя';
-  } else {
-    guestsEnd = 'гостей';
-  }
+  guestsEnd = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
 
-  if (adverts[0].offer.rooms === 1) {
+  if (currentAdvert.offer.rooms === 1) {
     roomsEnd = 'комната';
   } else {
-    if (adverts[0].offer.rooms === 5) {
+    if (currentAdvert.offer.rooms === 5) {
       roomsEnd = 'комнат';
     } else {
       roomsEnd = 'комнаты';
     }
   }
-  return adverts[0].offer.rooms + ' ' + roomsEnd + ' для ' + adverts[0].offer.guests + ' ' + guestsEnd;
+  return currentAdvert.offer.rooms + ' ' + roomsEnd + ' для ' + currentAdvert.offer.guests + ' ' + guestsEnd;
 };
 
 // Передает преимущества
@@ -228,9 +228,9 @@ var checkFeatures = function (featureList) {
   while (featureList.hasChildNodes()) {
     featureList.removeChild(featureList.lastChild);
   }
-  for (var n = 0; n < adverts[0].offer.features.length; n++) {
+  for (var n = 0; n < currentAdvert.offer.features.length; n++) {
     var li = document.createElement('li');
-    li.className = 'feature feature--' + adverts[0].offer.features[n];
+    li.className = 'feature feature--' + currentAdvert.offer.features[n];
     featureList.appendChild(li);
   }
   return featureList;
@@ -238,15 +238,15 @@ var checkFeatures = function (featureList) {
 
 // Наполняет карту контентом
 var advertCard = function () {
-  cardTitle.textContent = adverts[0].offer.title;
-  cardAddress.textContent = adverts[0].offer.address;
-  cardPrice.textContent = adverts[0].offer.price + '\t\u20BD/ночь';
-  cardType.textContent = getType(adverts[0].offer.type);
+  cardTitle.textContent = currentAdvert.offer.title;
+  cardAddress.textContent = currentAdvert.offer.address;
+  cardPrice.textContent = currentAdvert.offer.price + '\t\u20BD/ночь';
+  cardType.textContent = getType(currentAdvert.offer.type);
   cardRooms.textContent = getRoomsAndGuests();
-  cardTime.textContent = 'Заезд после ' + adverts[0].offer.checkin + ', ' + 'выезд до ' + adverts[0].offer.checkout;
+  cardTime.textContent = 'Заезд после ' + currentAdvert.offer.checkin + ', ' + 'выезд до ' + currentAdvert.offer.checkout;
   checkFeatures(cardFeatures);
-  cardDescription.textContent = adverts[0].offer.description;
-  userAvatar.src = adverts[0].author.avatar;
+  cardDescription.textContent = currentAdvert.offer.description;
+  userAvatar.src = currentAdvert.author.avatar;
   return card;
 };
 
