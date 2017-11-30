@@ -81,6 +81,10 @@ var cardFeatures = card.querySelector('.popup__features');
 var cardDescription = card.querySelector('p:nth-of-type(5)');
 var userAvatar = card.querySelector('.popup__avatar');
 
+var map = document.querySelector('.map');
+//map.classList.remove('map--faded');
+
+
 var getNumberFromRange = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -177,10 +181,6 @@ var createAdverts = function () {
 var adverts = createAdverts();
 var currentAdvert = adverts[0];
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
-
 // Генерирует пины
 var renderPin = function (advert) {
   var pinWidth = 40;
@@ -219,7 +219,7 @@ for (var m = 0; m < ADVERTS_COUNT; m++) {
 // Добавляет фрагмент на страницу
 var mapPins = map.querySelector('.map__pins');
 
-mapPins.appendChild(fragment);
+//mapPins.appendChild(fragment);
 
 // Передает тип жилья
 var getType = function (type) {
@@ -262,4 +262,13 @@ var advertCard = function () {
 };
 
 // Вставляет карту на страницу
-map.insertBefore(advertCard(), filtersContainer);
+//map.insertBefore(advertCard(), filtersContainer);
+
+document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
+  map.classList.remove('map--faded');
+  mapPins.appendChild(fragment);
+  var fieldsets = document.querySelectorAll('fieldset:disabled');
+  for (var o = 0; o < fieldsets.length; o++) {
+    fieldsets[o].removeAttribute('disabled');
+  }
+});
