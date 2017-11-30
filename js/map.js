@@ -219,14 +219,6 @@ for (var m = 0; m < ADVERTS_COUNT; m++) {
 // Добавляет фрагмент на страницу
 var mapPins = map.querySelector('.map__pins');
 
-//mapPins.appendChild(fragment);
-
-// Передает тип жилья
-var getType = function (type) {
-  var typeOfHouse = HOUSE_TYPES[type];
-  return typeOfHouse;
-};
-
 // Передает количество комнат и гостей
 var getRoomsAndGuests = function () {
   var guestsEnd = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
@@ -252,7 +244,7 @@ var advertCard = function () {
   cardTitle.textContent = currentAdvert.offer.title;
   cardAddress.textContent = currentAdvert.offer.address;
   cardPrice.textContent = currentAdvert.offer.price + '\t\u20BD/ночь';
-  cardType.textContent = getType(currentAdvert.offer.type);
+  cardType.textContent = HOUSE_TYPES[currentAdvert.offer.type];
   cardRooms.textContent = getRoomsAndGuests();
   cardTime.textContent = 'Заезд после ' + currentAdvert.offer.checkin + ', ' + 'выезд до ' + currentAdvert.offer.checkout;
   checkFeatures(cardFeatures);
@@ -270,5 +262,14 @@ document.querySelector('.map__pin--main').addEventListener('mouseup', function (
   var fieldsets = document.querySelectorAll('fieldset:disabled');
   for (var o = 0; o < fieldsets.length; o++) {
     fieldsets[o].removeAttribute('disabled');
+  }
+});
+
+
+document.addEventListener('click', function (evt) {
+  var activeElement = evt.target;
+  if (activeElement.className === 'map__pin' && activeElement.classList !== 'map__pin--active') {
+    activeElement.classList.add('map__pin--active');
+    console.log(activeElement);
   }
 });
