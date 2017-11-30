@@ -82,8 +82,6 @@ var cardDescription = card.querySelector('p:nth-of-type(5)');
 var userAvatar = card.querySelector('.popup__avatar');
 
 var map = document.querySelector('.map');
-//map.classList.remove('map--faded');
-
 
 var getNumberFromRange = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -254,7 +252,7 @@ var advertCard = function () {
 };
 
 // Вставляет карту на страницу
-//map.insertBefore(advertCard(), filtersContainer);
+map.insertBefore(advertCard(), filtersContainer);
 
 document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
   map.classList.remove('map--faded');
@@ -265,11 +263,16 @@ document.querySelector('.map__pin--main').addEventListener('mouseup', function (
   }
 });
 
-
 document.addEventListener('click', function (evt) {
   var activeElement = evt.target;
   if (activeElement.className === 'map__pin' && activeElement.classList !== 'map__pin--active') {
     activeElement.classList.add('map__pin--active');
-    console.log(activeElement);
+  }
+});
+
+document.addEventListener('mousedown', function () {
+  var mapPinActive = document.querySelector('.map__pin--active');
+  if (mapPinActive) {
+    mapPinActive.classList.remove('map__pin--active');
   }
 });
