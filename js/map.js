@@ -251,12 +251,13 @@ var advertCard = function (currentAdvert) {
   return card;
 };
 
-// --------------------------------- Обработка событий ---------------------------------------
+// ------------------------- Обработка событий ---------------------------------
 
 var onPopupClick = function (evt) {
   var closeButton = evt.target;
+  var mapPinActive = document.querySelector('.map__pin--active');
   if (closeButton.classList.contains('popup__close')) {
-    closeButton.classList.remove('map__pin--active');
+    mapPinActive.classList.remove('map__pin--active');
     map.removeChild(advCard);
     advCard = null;
   }
@@ -278,6 +279,27 @@ var onPinClick = function (evt) {
       advCard = advertCard(adverts[pinsArray.indexOf(activeElement)]);
       map.insertBefore(advCard, filtersContainer);
       advCard.addEventListener('click', onPopupClick);
+      document.querySelector('.map__pins').addEventListener('keydown', onPopupEscPress);
+    }
+  }
+};
+
+var onPopupEscPress = function (evt) {
+  var activeElement = evt.target;
+  if (evt.keyCode === ESC_KEYCODE) {
+    activeElement.classList.remove('map__pin--active');
+    map.removeChild(advCard);
+    advCard = null;
+    document.querySelector('.map__pins').removeEventListener('keydown', onPopupEscPress);
+  }
+};
+
+var onPopupEnterPress = function (evt) {
+  var activeElement = document.querySelector('.popup__close');
+  var mapPinActive = document.querySelector('.map__pin--active');
+  if (activeElement = evt.target) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      mapPinActive.classList.remove('map__pin--active');
     }
   }
 };
@@ -291,4 +313,12 @@ document.querySelector('.map__pin--main').addEventListener('mouseup', function (
   }
 });
 
-document.addEventListener('click', onPinClick);
+document.querySelector('.map__pins').addEventListener('click', onPinClick);
+
+document.querySelector('.map__pins').addEventListener('click', onPopupClick);
+
+document.querySelector('.map__pins').addEventListener('keydown', onPopupEscPress);
+
+document.querySelector('.map__pins').addEventListener('keydown', onPopupEnterPress);
+
+// -----------------------------------------------------------------------------
