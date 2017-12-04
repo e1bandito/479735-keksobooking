@@ -165,7 +165,7 @@ var advertGenerate = function () {
 
 var createAdverts = function () {
   var advertsArray = [];
-  for (var i = 0; i < ADVERTS_COUNT; i++) {
+  for (i = 0; i < ADVERTS_COUNT; i++) {
     advertsArray.push(advertGenerate());
   }
   return advertsArray;
@@ -204,7 +204,7 @@ for (var l = 0; l < adverts.length; l++) {
 var fragment = document.createDocumentFragment();
 
 // Добавляет в фрагмент пины
-for (var i = 0; i < ADVERTS_COUNT; i++) {
+for (i = 0; i < ADVERTS_COUNT; i++) {
   fragment.appendChild(pinsArray[i]);
 }
 
@@ -228,7 +228,7 @@ var getAdvertCard = function (currentAdvert) {
     while (featureList.hasChildNodes()) {
       featureList.removeChild(featureList.lastChild);
     }
-    for (var i = 0; i < currentAdvert.offer.features.length; i++) {
+    for (i = 0; i < currentAdvert.offer.features.length; i++) {
       var li = document.createElement('li');
       li.className = 'feature feature--' + currentAdvert.offer.features[i];
       featureList.appendChild(li);
@@ -311,7 +311,7 @@ document.querySelector('.map__pin--main').addEventListener('mouseup', function (
   map.classList.remove('map--faded');
   mapPins.appendChild(fragment);
   var fieldsets = document.querySelectorAll('fieldset:disabled');
-  for (var i = 0; i < fieldsets.length; i++) {
+  for (i = 0; i < fieldsets.length; i++) {
     fieldsets[i].removeAttribute('disabled');
   }
 });
