@@ -215,7 +215,7 @@ var mapPins = map.querySelector('.map__pins');
 var getAdvertCard = function (currentAdvert) {
   var card = cardTemplate.cloneNode(true);
   var cardTitle = card.querySelector('.map__card--title');
-  var cardAddress = card.querySelector('.map__card--adress');
+  var cardAddress = card.querySelector('.map__card--address');
   var cardPrice = card.querySelector('.popup__price');
   var cardType = card.querySelector('.map__card--type');
   var cardRooms = card.querySelector('.map__card--rooms');
@@ -230,16 +230,22 @@ var getAdvertCard = function (currentAdvert) {
     }
     for (var i = 0; i < currentAdvert.offer.features.length; i++) {
       var li = document.createElement('li');
-      li.className = 'feature feature--' + currentAdvert.offer.features[i];
+      var liClass = 'feature--' + currentAdvert.offer.features[i];
+      li.classList.add('feature', liClass);
       featureList.appendChild(li);
     }
     return featureList;
   };
 
   var getRoomsAndGuests = function () {
-    var guestsPostFix = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
-    var roomsPostFix = ROOMS_DICT[currentAdvert.offer.rooms] || ROOMS_DICT.default;
-    return currentAdvert.offer.rooms + ' ' + roomsPostFix + ' для ' + currentAdvert.offer.guests + ' ' + guestsPostFix;
+    var roomsDict = {
+      'default': 'комнаты',
+      '1': 'комната',
+      '5': 'комнат'
+    };
+    var guestsPostfix = currentAdvert.offer.guests === 1 ? 'гостя' : 'гостей';
+    var roomsPostfix = roomsDict[currentAdvert.offer.rooms] || roomsDict.default;
+    return currentAdvert.offer.rooms + ' ' + roomsPostfix + ' для ' + currentAdvert.offer.guests + ' ' + guestsPostfix;
   };
 
   cardTitle.textContent = currentAdvert.offer.title;
@@ -271,7 +277,7 @@ var onPinClick = function (evt) {
   if (mapPinActive) {
     mapPinActive.classList.remove(MAP_PIN_ACTIVE);
   }
-  var mapCardActive = map.querySelector(MAP_CARD);
+  var mapCardActive = map.querySelector('.map__card');
   var activeElement = evt.target;
   if (activeElement.classList.contains('map__pin')) {
     activeElement.classList.add(MAP_PIN_ACTIVE);
@@ -302,7 +308,7 @@ var onPopupEnterPress = function (evt) {
   var mapPinActive = document.querySelector(MAP_PIN_ACTIVE_CLASS);
   if (activeElement === evt.target) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      mapPinActive.classList.remove(MAP_PIN_ACTIVE);
+      mapPinActive.classList.remove(MAP_PIN_ACTIVE_CLASS);
     }
   }
 };
@@ -310,7 +316,7 @@ var onPopupEnterPress = function (evt) {
 document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
   map.classList.remove('map--faded');
   mapPins.appendChild(fragment);
-  var fieldsets = document.querySelectorAll('fieldset:disabled');
+  var fieldsets = document.querySelectorAll('fieldset');
   for (var i = 0; i < fieldsets.length; i++) {
     fieldsets[i].removeAttribute('disabled');
   }
