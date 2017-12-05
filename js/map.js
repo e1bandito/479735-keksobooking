@@ -316,13 +316,8 @@ var onPopupEnterPress = function (evt) {
 document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
   map.classList.remove('map--faded');
   mapPins.appendChild(fragment);
-<<<<<<< HEAD
   var fieldsets = document.querySelectorAll('fieldset');
-  for (var i = 0; i < fieldsets.length; i++) {
-=======
-  var fieldsets = document.querySelectorAll('fieldset:disabled');
   for (i = 0; i < fieldsets.length; i++) {
->>>>>>> ebab26404bce7cb5a724ccaecdac9b130391a8cf
     fieldsets[i].removeAttribute('disabled');
   }
 });
