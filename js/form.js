@@ -1,6 +1,34 @@
 'use strict';
 
 (function () {
+
+  var NO_GUESTS = {
+    value: 0,
+    text: 'не для гостей'
+  };
+
+  var SINGLE_GUEST = {
+    value: 1,
+    text: 'для 1 гостя'
+  };
+
+  var DOUBLE_GUESTS = {
+    value: 2,
+    text: 'для 2 гостей'
+  };
+
+  var TRIPLE_GUESTS = {
+    value: 3,
+    text: 'для 3 гостей'
+  };
+
+  var OPTIONS = {
+    100: [NO_GUESTS],
+    1: [SINGLE_GUEST],
+    2: [DOUBLE_GUESTS, SINGLE_GUEST],
+    3: [TRIPLE_GUESTS, DOUBLE_GUESTS, SINGLE_GUEST]
+  };
+
   var minPriceOfHouses = {
     flat: 1000,
     bungalo: 0,
@@ -28,13 +56,6 @@
     var activeValue = typeHouseSelect.value;
     housePrice.setAttribute('min', minPriceOfHouses[activeValue]);
   });
-
-  var OPTIONS = {
-    100: [{value: 0, text: 'не для гостей'}],
-    1: [{value: 1, text: 'для 1 гостя'}],
-    2: [{value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}],
-    3: [{value: 3, text: 'для 3 гостей'}, {value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}]
-  };
 
   var getOptions = function (guests) {
     for (i = 0; i < guests.length; i++) {
