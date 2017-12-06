@@ -28,12 +28,6 @@ var FEATURES_LIST = [
 
 var MIN_FEATURES_COUNT = 1;
 
-var ROOMS_DICT = {
-  'default': 'комнаты',
-  '1': 'комната',
-  '5': 'комнат'
-};
-
 var ROOMS_COUNT = {
   MIN: 1,
   MAX: 5
@@ -279,6 +273,9 @@ var onPinClick = function (evt) {
   }
   var mapCardActive = map.querySelector('.map__card');
   var activeElement = evt.target;
+  if (activeElement.tagName === 'IMG') {
+    activeElement = activeElement.parentElement;
+  }
   if (activeElement.classList.contains('map__pin')) {
     activeElement.classList.add(MAP_PIN_ACTIVE);
     if (pinsArray.indexOf(activeElement) !== -1) {
