@@ -29,11 +29,11 @@
     housePrice.setAttribute('min', minPriceOfHouses[activeValue]);
   });
 
-  var options = {
-    nobody: [{value: 0, text: 'не для гостей'}],
-    single: [{value: 1, text: 'для 1 гостя'}],
-    double: [{value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}],
-    treble: [{value: 3, text: 'для 3 гостей'}, {value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}]
+  var OPTIONS = {
+    100: [{value: 0, text: 'не для гостей'}],
+    1: [{value: 1, text: 'для 1 гостя'}],
+    2: [{value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}],
+    3: [{value: 3, text: 'для 3 гостей'}, {value: 2, text: 'для 2 гостей'}, {value: 1, text: 'для 1 гостя'}]
   };
 
   var getOptions = function (guests) {
@@ -53,18 +53,7 @@
       guestsCount.removeChild(guestsCount.firstChild);
     }
 
-    if (firstValue === '1') {
-      getOptions(options.single);
-    }
-    if (firstValue === '2') {
-      getOptions(options.double);
-    }
-    if (firstValue === '3') {
-      getOptions(options.treble);
-    }
-    if (firstValue === '100') {
-      getOptions(options.nobody);
-    }
+    getOptions(OPTIONS[firstValue]);
   });
 
   housePrice.addEventListener('invalid', function () {
