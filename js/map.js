@@ -311,7 +311,9 @@ var onPopupEnterPress = function (evt) {
 };
 
 document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
+  var noticeForm = document.querySelector('.notice__form--disabled');
   map.classList.remove('map--faded');
+  noticeForm.classList.remove('notice__form--disabled');
   mapPins.appendChild(fragment);
   var fieldsets = document.querySelectorAll('fieldset');
   for (i = 0; i < fieldsets.length; i++) {
