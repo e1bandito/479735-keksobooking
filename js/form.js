@@ -29,6 +29,13 @@
     3: [TRIPLE_GUESTS, DOUBLE_GUESTS, SINGLE_GUEST]
   };
 
+  var MAX_PRICE = '1000000';
+
+  var TITLE_LENGTH = {
+    MIN_LENGTH: 30,
+    MAX_LENGTH: 100
+  };
+
   var minPriceOfHouses = {
     flat: 1000,
     bungalo: 0,
@@ -48,13 +55,13 @@
 
   // функция синхронизации полей заезда/выезда
   timeIn.addEventListener('change', function () {
-    var firstValue = timeIn.selectedIndex;
-    timeOut.selectedIndex = firstValue;
+    var timeInValue = timeIn.selectedIndex;
+    timeOut.selectedIndex = timeInValue;
   });
 
   typeHouseSelect.addEventListener('change', function () {
-    var activeValue = typeHouseSelect.value;
-    housePrice.setAttribute('min', minPriceOfHouses[activeValue]);
+    var selectedType = typeHouseSelect.value;
+    housePrice.setAttribute('min', minPriceOfHouses[selectedType]);
   });
 
   var getOptions = function (guests) {
@@ -67,14 +74,14 @@
   };
 
   roomsCount.addEventListener('change', function () {
-    var firstValue = roomsCount.value;
-    guestsCount.value = (firstValue === '100') ? '0' : firstValue;
+    var roomsCountValue = roomsCount.value;
+    guestsCount.value = (roomsCountValue === '100') ? '0' : roomsCountValue;
 
     while (guestsCount.firstChild) {
       guestsCount.removeChild(guestsCount.firstChild);
     }
 
-    getOptions(OPTIONS[firstValue]);
+    getOptions(OPTIONS[roomsCountValue]);
   });
 
   housePrice.addEventListener('invalid', function () {
@@ -86,17 +93,17 @@
       housePrice.setCustomValidity('Не может стоить меньше ' + housePrice.min);
     }
     if (housePrice.validity.rangeOverflow) {
-      housePrice.setCustomValidity('Не может превышать 1 000 000');
+      housePrice.setCustomValidity('Не может превышать ' + MAX_PRICE);
     }
   });
 
   advertTitle.addEventListener('invalid', function () {
     advertTitle.setCustomValidity('');
     if (advertTitle.validity.tooShort) {
-      advertTitle.setCustomValidity('Заголовок должен содержать не менее 30 символов.');
+      advertTitle.setCustomValidity('Заголовок должен содержать не менее ' + TITLE_LENGTH.MIN_LENGTH + ' символов.');
     }
     if (advertTitle.validity.tooLong) {
-      advertTitle.setCustomValidity('Длина заголовка не должна превышать 100 символов');
+      advertTitle.setCustomValidity('Длина заголовка не должна превышать ' + TITLE_LENGTH.MAX_LENGTH + ' символов');
     }
     if (advertTitle.validity.valueMissing) {
       advertTitle.setCustomValidity('Пожалуйста, добавьте заголовок');
