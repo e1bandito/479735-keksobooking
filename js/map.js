@@ -91,4 +91,62 @@
   document.querySelector('.map__pins').addEventListener('keydown', onPopupEscClose);
 
   document.querySelector('.map__pins').addEventListener('keydown', onPopupEnterPress);
+
+  // ---------------------------- Перетаскивание -------------------------------
+
+  var map = document.querySelector('.map');
+  var mainPin = map.querySelector('.map__pin--main');
+
+  mainPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var currentCoords = {
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
+      };
+
+      if (currentCoords.y < window.util.LOCATION_AREA.MIN_Y) {
+        currentCoords.y = window.util.LOCATION_AREA.MIN_Y;
+      }
+
+      if (currentCoords.y > window.util.LOCATION_AREA.MAX_Y) {
+        currentCoords.y = window.util.LOCATION_AREA.MAX_Y;
+      }
+
+      mainPin.style.top = (currentCoords.y) + 'px';
+      mainPin.style.left = (currentCoords.x) + 'px';
+
+      var address = document.querySelector('#address');
+      address.value = currentCoords.x + window.util.pinParams.indentX + ' ' + currentCoords.y;
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      map.removeEventListener('mousemove', onMouseMove);
+      map.removeEventListener('mouseup', onMouseUp);
+    };
+
+    map.addEventListener('mousemove', onMouseMove);
+    map.addEventListener('mouseup', onMouseUp);
+  });
+
 }());
