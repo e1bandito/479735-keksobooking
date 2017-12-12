@@ -15,6 +15,7 @@
     ADVERTS_COUNT: 8,
     ESC_KEYCODE: 27,
     ENTER_KEYCODE: 13,
+    MAP: document.querySelector('.map'),
     MAP_CARD: '.map__card',
     LOCATION_AREA: {
       MIN_X: 300,
