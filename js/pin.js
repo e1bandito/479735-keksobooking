@@ -4,21 +4,15 @@
 
   var getPinsArray = function () {
     var renderPin = function (advert) {
-      var pinWidth = 40;
-      var pinHeight = 40;
-      var indent = {
-        x: pinWidth / 2,
-        y: pinHeight
-      };
 
       var pin = document.createElement('button');
       var avatar = document.createElement('img');
       pin.classList.add('map__pin');
-      pin.style.left = advert.location.x - indent.x + 'px';
-      pin.style.top = advert.location.y - indent.y + 'px';
+      pin.style.left = advert.location.x - window.util.pinParams.indentX + 'px';
+      pin.style.top = advert.location.y - window.util.pinParams.indentY + 'px';
       avatar.src = advert.author.avatar;
-      avatar.width = pinWidth;
-      avatar.height = pinHeight;
+      avatar.width = window.util.pinParams.pinWidth;
+      avatar.height = window.util.pinParams.pinHeight;
       pin.appendChild(avatar);
       return pin;
     };

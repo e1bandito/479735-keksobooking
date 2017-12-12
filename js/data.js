@@ -43,16 +43,9 @@
 
   var CHECKOUT_TIMES = ['12:00', '13:00', '14:00'];
 
-  var userIndex = 0;
   var MAX_GUESTS = 10;
 
-  var LOCATION_AREA = {
-    MIN_X: 300,
-    MAX_X: 900,
-    MIN_Y: 100,
-    MAX_Y: 500
-  };
-
+  var userIndex = 0;
   var lastTitle = 0;
   var i = 0;
 
@@ -120,8 +113,8 @@
       },
 
       location: {
-        x: window.util.getNumberFromRange(LOCATION_AREA.MIN_X, LOCATION_AREA.MAX_X),
-        y: window.util.getNumberFromRange(LOCATION_AREA.MIN_Y, LOCATION_AREA.MAX_Y)
+        x: window.util.getNumberFromRange(window.util.LOCATION_AREA.MIN_X, window.util.LOCATION_AREA.MAX_X),
+        y: window.util.getNumberFromRange(window.util.LOCATION_AREA.MIN_Y, window.util.LOCATION_AREA.MAX_Y)
       }
     };
     advert.offer.address = advert.location.x + ' ' + advert.location.y;

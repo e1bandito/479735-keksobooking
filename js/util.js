@@ -15,6 +15,18 @@
     ADVERTS_COUNT: 8,
     ESC_KEYCODE: 27,
     ENTER_KEYCODE: 13,
-    MAP_CARD: '.map__card'
+    MAP_CARD: '.map__card',
+    LOCATION_AREA: {
+      MIN_X: 300,
+      MAX_X: 900,
+      MIN_Y: 100,
+      MAX_Y: 650
+    },
+    pinParams: {
+      pinWidth: 40,
+      pinHeight: 40,
+      indentX: 40 / 2,
+      indentY: 40
+    }
   };
 }());
