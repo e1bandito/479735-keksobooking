@@ -31,16 +31,15 @@
 
   var MAX_PRICE = '1000000';
 
+  var HOUSE_TYPES = ['bungalo', 'flat', 'house', 'palace'];
+
+  var MIN_PRICES = [0, 1000, 5000, 10000];
+
+  var CHECK_TIMES = ['12:00', '13:00', '14:00'];
+
   var TITLE_LENGTH = {
     MIN_LENGTH: 30,
     MAX_LENGTH: 100
-  };
-
-  var minPriceOfHouses = {
-    flat: 1000,
-    bungalo: 0,
-    house: 5000,
-    palace: 10000
   };
 
   var form = document.querySelector('.notice__form');
@@ -54,14 +53,21 @@
   var i = 0;
 
   // функция синхронизации полей заезда/выезда
+
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
+
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+  };
+
   timeIn.addEventListener('change', function () {
-    var timeInValue = timeIn.selectedIndex;
-    timeOut.selectedIndex = timeInValue;
+    window.synchronizeFields(timeIn, timeOut, CHECK_TIMES, CHECK_TIMES, syncValues);
   });
 
   typeHouseSelect.addEventListener('change', function () {
-    var selectedType = typeHouseSelect.value;
-    housePrice.setAttribute('min', minPriceOfHouses[selectedType]);
+    window.synchronizeFields(typeHouseSelect, housePrice, HOUSE_TYPES, MIN_PRICES, syncValueWithMin);
   });
 
   var getOptions = function (guests) {
