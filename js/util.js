@@ -12,7 +12,7 @@
       var randomIndex = window.util.getRandomNumber(array.length);
       return array[randomIndex];
     },
-    ADVERTS_COUNT: 8,
+//    ADVERTS_COUNT: 8,
     ESC_KEYCODE: 27,
     ENTER_KEYCODE: 13,
     MAP: document.querySelector('.map'),

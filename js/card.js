@@ -22,18 +22,15 @@
     var cardDescription = card.querySelector('.map__card--description');
     var userAvatar = card.querySelector('.popup__avatar');
 
-    var checkFeatures = function (featureList) {
-      while (featureList.hasChildNodes()) {
-        featureList.removeChild(featureList.lastChild);
-      }
-      for (i = 0; i < currentAdvert.offer.features.length; i++) {
-        var li = document.createElement('li');
-        var liClass = 'feature--' + currentAdvert.offer.features[i];
-        li.classList.add('feature', liClass);
-        featureList.appendChild(li);
-      }
-      return featureList;
-    };
+    while (cardFeatures.hasChildNodes()) {
+      cardFeatures.removeChild(cardFeatures.lastChild);
+    }
+    for (i = 0; i < currentAdvert.offer.features.length; i++) {
+      var li = document.createElement('li');
+      var liClass = 'feature--' + currentAdvert.offer.features[i];
+      li.classList.add('feature', liClass);
+      cardFeatures.appendChild(li);
+    }
 
     var getRoomsAndGuests = function () {
       var roomsDict = {
@@ -52,7 +49,6 @@
     cardType.textContent = HOUSE_TYPES[currentAdvert.offer.type];
     cardRooms.textContent = getRoomsAndGuests();
     cardTime.textContent = 'Заезд после ' + currentAdvert.offer.checkin + ', ' + 'выезд до ' + currentAdvert.offer.checkout;
-    checkFeatures(cardFeatures);
     cardDescription.textContent = currentAdvert.offer.description;
     userAvatar.src = currentAdvert.author.avatar;
     return card;
