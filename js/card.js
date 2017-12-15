@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAP_PIN_ACTIVE = 'map__pin--active';
+  var MAP_PIN_ACTIVE_CLASS = '.map__pin--active';
   var HOUSE_TYPES = {
     flat: 'квартира',
     house: 'дом',
@@ -9,6 +11,38 @@
 
   var i = 0;
   var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+  var onPopupClick = function (evt) {
+    var map = window.util.MAP;
+    var closeButton = evt.target;
+    var mapPinActive = document.querySelector(MAP_PIN_ACTIVE_CLASS);
+    var mapCardActive = map.querySelector(window.util.MAP_CARD);
+    if (closeButton.classList.contains('popup__close') && mapCardActive) {
+      mapPinActive.classList.remove(MAP_PIN_ACTIVE);
+      mapCardActive.classList.add('hidden');
+    }
+  };
+
+  var onPopupEscClose = function (evt) {
+    var map = window.util.MAP;
+    var activeElement = evt.target;
+    var mapCardActive = map.querySelector(window.util.MAP_CARD);
+    if (evt.keyCode === window.util.ESC_KEYCODE && mapCardActive) {
+      activeElement.classList.remove(MAP_PIN_ACTIVE);
+      map.removeChild(mapCardActive);
+      document.querySelector('.map__pins').removeEventListener('keydown', onPopupEscClose);
+    }
+  };
+
+  var onPopupEnterPress = function (evt) {
+    var activeElement = document.querySelector('.popup__close');
+    var mapPinActive = document.querySelector(MAP_PIN_ACTIVE_CLASS);
+    if (activeElement === evt.target) {
+      if (evt.keyCode === window.util.ENTER_KEYCODE) {
+        mapPinActive.classList.remove(MAP_PIN_ACTIVE_CLASS);
+      }
+    }
+  };
 
   window.getAdvertCard = function (currentAdvert) {
     var card = cardTemplate.cloneNode(true);
@@ -21,6 +55,7 @@
     var cardFeatures = card.querySelector('.popup__features');
     var cardDescription = card.querySelector('.map__card--description');
     var userAvatar = card.querySelector('.popup__avatar');
+    var closeButton = card.querySelector('.popup__close');
 
     while (cardFeatures.hasChildNodes()) {
       cardFeatures.removeChild(cardFeatures.lastChild);
@@ -51,6 +86,11 @@
     cardTime.textContent = 'Заезд после ' + currentAdvert.offer.checkin + ', ' + 'выезд до ' + currentAdvert.offer.checkout;
     cardDescription.textContent = currentAdvert.offer.description;
     userAvatar.src = currentAdvert.author.avatar;
+
+    closeButton.addEventListener('click', onPopupClick);
+    closeButton.addEventListener('keydown', onPopupEnterPress);
+    document.addEventListener('keydown', onPopupEscClose);
+
     return card;
   };
 })();
