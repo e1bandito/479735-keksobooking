@@ -52,7 +52,22 @@
   var guestsCount = form.querySelector('#capacity');
   var i = 0;
 
-  // функция синхронизации полей заезда/выезда
+  var onSuccess = function () {
+    form.reset();
+  };
+
+  var getErrorMessage = function (message) {
+    var container = document.createElement('div');
+    container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
+    container.style.position = 'absolute';
+    container.style.left = 0;
+    container.style.right = 0;
+    container.style.fontSize = '25px';
+    container.style.color = 'white';
+
+    container.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', container);
+  };
 
   var syncValues = function (element, value) {
     element.value = value;
@@ -114,5 +129,10 @@
     if (advertTitle.validity.valueMissing) {
       advertTitle.setCustomValidity('Пожалуйста, добавьте заголовок');
     }
+  });
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), onSuccess, getErrorMessage);
+    evt.preventDefault();
   });
 })();
