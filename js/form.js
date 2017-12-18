@@ -52,8 +52,18 @@
   var guestsCount = form.querySelector('#capacity');
   var i = 0;
 
+  var getAddress = function () {
+    var mainPin = window.util.MAP.querySelector('.map__pin--main');
+    var address = document.querySelector('#address');
+    var left = parseInt(getComputedStyle(mainPin).getPropertyValue('left'), 10);
+    var top = parseInt(getComputedStyle(mainPin).getPropertyValue('top'), 10);
+
+    address.value = left + window.util.pinParams.indentX + ' ' + top;
+  };
+
   var onSuccess = function () {
     form.reset();
+    getAddress();
   };
 
   var getErrorMessage = function (message) {
