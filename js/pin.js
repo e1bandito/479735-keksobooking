@@ -1,28 +1,36 @@
 'use strict';
+
 (function () {
-  var i = 0;
+  var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
-  var getPinsArray = function () {
-    var renderPin = function (advert) {
+  var onPinClick = function (evt, object) {
+    var activePin = document.querySelector('.map__pin--active');
 
-      var pin = document.createElement('button');
-      var avatar = document.createElement('img');
-      pin.classList.add('map__pin');
-      pin.style.left = advert.location.x - window.util.pinParams.indentX + 'px';
-      pin.style.top = advert.location.y - window.util.pinParams.indentY + 'px';
-      avatar.src = advert.author.avatar;
-      avatar.width = window.util.pinParams.pinWidth;
-      avatar.height = window.util.pinParams.pinHeight;
-      pin.appendChild(avatar);
-      return pin;
-    };
-
-    var pinsArray = [];
-    for (i = 0; i < window.adverts.length; i++) {
-      pinsArray.push(renderPin(window.adverts[i]));
+    if (activePin) {
+      window.pin.removeActivePin(activePin);
     }
-    return pinsArray;
+
+    evt.currentTarget.classList.add('map__pin--active');
+    window.showCard(object);
   };
 
-  window.pinsArray = getPinsArray();
+  window.pin = {
+    renderPin: function (advert) {
+      var pin = pinTemplate.cloneNode(true);
+      var pinAvatar = pin.querySelector('img');
+      pin.style.left = advert.location.x - window.util.pinParams.indentX + 'px';
+      pin.style.top = advert.location.y - window.util.pinParams.indentY + 'px';
+      pinAvatar.setAttribute('src', advert.author.avatar);
+
+      pin.addEventListener('click', function (evt) {
+        onPinClick(evt, advert);
+      });
+
+      return pin;
+    },
+
+    removeActivePin: function (activeElement) {
+      activeElement.classList.remove('map__pin--active');
+    }
+  };
 })();
