@@ -48,24 +48,14 @@
     if (mapCardActive) {
       map.removeChild(mapCardActive);
     }
-    if (filteredPins.length > PINS_COUNT) {
-      var finalFilteredPins = filteredPins.slice(PINS_COUNT);
-      pinsList.appendChild(getFragment(finalFilteredPins));
-    } else {
-      pinsList.appendChild(getFragment(filteredPins));
-    }
+    filteredPins.length = Math.min(filteredPins.length, PINS_COUNT);
+    pinsList.appendChild(getFragment(filteredPins));
   };
 
   var filters = document.querySelector('.map__filters');
 
   filters.addEventListener('change', function () {
-    var lastTimeout;
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
-      renderPinsOnMap();
-    }, 1000);
+    window.util.debounce(renderPinsOnMap);
   });
 
   var getErrorMessage = function (message) {

@@ -1,45 +1,45 @@
 'use strict';
 
 (function () {
-  var PriceValue = {
+  var priceValues = {
     MIN: 10000,
     MAX: 50000
   };
 
   var priceOptions = {
     'low': function (price) {
-      return price < PriceValue.MIN;
+      return price < priceValues.MIN;
     },
     'middle': function (price) {
-      return price > PriceValue.MIN && price < PriceValue.MAX;
+      return price > priceValues.MIN && price < priceValues.MAX;
     },
     'high': function (price) {
-      return price >= PriceValue.MAX;
+      return price >= priceValues.MAX;
     }
   };
 
-  var priceFilter = function (array, value) {
-    return array.filter(function (it) {
-      return priceOptions[value](it.offer.price);
+  var priceFilter = function (list, value) {
+    return list.filter(function (item) {
+      return priceOptions[value](item.offer.price);
     });
   };
 
-  var valueFilter = function (array, value, type) {
-    return array.filter(function (it) {
-      return it.offer[type].toString() === value;
+  var valueFilter = function (list, value, type) {
+    return list.filter(function (item) {
+      return item.offer[type].toString() === value;
     });
   };
 
-  var featuresFilter = function (array, feature) {
-    return array.filter(function (it) {
-      return it.offer.features.indexOf(feature) !== -1;
+  var featuresFilter = function (list, feature) {
+    return list.filter(function (item) {
+      return item.offer.features.indexOf(feature) !== -1;
     });
   };
 
   window.filterPins = function (defaultArray) {
     var filters = document.querySelectorAll('.map__filter');
     var activeFeatures = document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked');
-    var filtersSelect = Array.from(filters).filter(function (filter) {
+    var filtersSelect = [].slice.call(filters).filter(function (filter) {
       return filter.value !== 'any';
     });
 
