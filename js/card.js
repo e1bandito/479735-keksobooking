@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
   var MAP_PIN_ACTIVE = 'map__pin--active';
   var MAP_PIN_ACTIVE_CLASS = '.map__pin--active';
   var HOUSE_TYPES = {
@@ -27,7 +29,7 @@
     var map = window.util.MAP;
     var activeElement = evt.target;
     var mapCardActive = map.querySelector(window.util.MAP_CARD);
-    if (evt.keyCode === window.util.ESC_KEYCODE && mapCardActive) {
+    if (evt.keyCode === ESC_KEYCODE && mapCardActive) {
       activeElement.classList.remove(MAP_PIN_ACTIVE);
       map.removeChild(mapCardActive);
       document.querySelector('.map__pins').removeEventListener('keydown', onPopupEscClose);
@@ -38,7 +40,7 @@
     var activeElement = document.querySelector('.popup__close');
     var mapPinActive = document.querySelector(MAP_PIN_ACTIVE_CLASS);
     if (activeElement === evt.target) {
-      if (evt.keyCode === window.util.ENTER_KEYCODE) {
+      if (evt.keyCode === ENTER_KEYCODE) {
         mapPinActive.classList.remove(MAP_PIN_ACTIVE_CLASS);
       }
     }
