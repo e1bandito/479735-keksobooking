@@ -56,8 +56,8 @@
 
   var clearImages = function (elements) {
     elements.forEach(function (item) {
-     item.remove();
-     });
+      item.remove();
+    });
   };
 
   var onSuccess = function () {
@@ -66,7 +66,6 @@
 
     var photoPreview = document.querySelector('.form__photo-container');
     var images = photoPreview.querySelectorAll('img');
-    var avatarPreview = document.querySelectorAll('.notice__preview img');
     var container = document.createElement('div');
     var defaultAvatar = 'img/muffin.png';
 
