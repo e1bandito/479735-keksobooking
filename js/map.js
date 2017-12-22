@@ -59,20 +59,9 @@
   });
 
   var getErrorMessage = function (message) {
-    var container = document.createElement('div');
-    container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
-    container.style.position = 'fixed';
-    container.style.left = 0;
-    container.style.right = 0;
-    container.style.fontSize = '25px';
-    container.style.color = 'white';
-
-    container.textContent = message;
+    var container = window.util.getInfoContainer(message);
     document.body.insertAdjacentElement('afterbegin', container);
-
-    setTimeout(function () {
-      container.parentNode.removeChild(container);
-    }, 5000);
+    window.util.removeContainer(container);
   };
 
   document.querySelector('.map__pin--main').addEventListener('mouseup', function () {

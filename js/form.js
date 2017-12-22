@@ -64,42 +64,20 @@
     form.reset();
     window.util.getAddress();
 
-    var photoPreview = document.querySelector('.form__photo-container');
-    var images = photoPreview.querySelectorAll('img');
-    var container = document.createElement('div');
+    var images = document.querySelectorAll('.form__photo-container img');
     var defaultAvatar = 'img/muffin.png';
+    var container = window.util.getInfoContainer(SUCCESS_MESSAGE);
 
-    container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
-    container.style.position = 'fixed';
-    container.style.left = 0;
-    container.style.right = 0;
-    container.style.fontSize = '25px';
-    container.style.color = 'white';
-    container.textContent = SUCCESS_MESSAGE;
     document.body.insertAdjacentElement('afterbegin', container);
-
     window.imageInserting.avatar(defaultAvatar);
     clearImages(images);
-
-    setTimeout(function () {
-      container.parentNode.removeChild(container);
-    }, 5000);
+    window.util.removeContainer(container);
   };
 
   var getErrorMessage = function (message) {
-    var container = document.createElement('div');
-    container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
-    container.style.position = 'absolute';
-    container.style.left = 0;
-    container.style.right = 0;
-    container.style.fontSize = '25px';
-    container.style.color = 'white';
-    container.textContent = message;
+    var container = window.util.getInfoContainer(message);
     document.body.insertAdjacentElement('afterbegin', container);
-
-    setTimeout(function () {
-      container.parentNode.removeChild(container);
-    }, 5000);
+    window.util.removeContainer(container);
   };
 
   var syncValues = function (element, value) {
