@@ -61,7 +61,7 @@
   var getErrorMessage = function (message) {
     var container = document.createElement('div');
     container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
-    container.style.position = 'absolute';
+    container.style.position = 'fixed';
     container.style.left = 0;
     container.style.right = 0;
     container.style.fontSize = '25px';
@@ -69,12 +69,17 @@
 
     container.textContent = message;
     document.body.insertAdjacentElement('afterbegin', container);
+
+    setTimeout(function () {
+      container.parentNode.removeChild(container);
+    }, 5000);
   };
 
   document.querySelector('.map__pin--main').addEventListener('mouseup', function () {
     var map = window.util.MAP;
     var noticeForm = document.querySelector('.notice__form--disabled');
     map.classList.remove('map--faded');
+    window.util.getAddress();
     if (noticeForm) {
       noticeForm.classList.remove('notice__form--disabled');
       window.backend.load(getFragmentWithPins, getErrorMessage);

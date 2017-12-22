@@ -37,6 +37,8 @@
 
   var CHECK_TIMES = ['12:00', '13:00', '14:00'];
 
+  var SUCCESS_MESSAGE = 'Форма успешно отправлена!';
+
   var TITLE_LENGTH = {
     MIN_LENGTH: 30,
     MAX_LENGTH: 100
@@ -52,18 +54,37 @@
   var guestsCount = form.querySelector('#capacity');
   var i = 0;
 
-  var getAddress = function () {
-    var mainPin = window.util.MAP.querySelector('.map__pin--main');
-    var address = document.querySelector('#address');
-    var left = parseInt(getComputedStyle(mainPin).getPropertyValue('left'), 10);
-    var top = parseInt(getComputedStyle(mainPin).getPropertyValue('top'), 10);
-
-    address.value = left + window.util.pinParams.indentX + ' ' + top;
+  var clearImages = function (elements) {
+    elements.forEach(function (item) {
+     item.remove();
+     });
   };
 
   var onSuccess = function () {
     form.reset();
-    getAddress();
+    window.util.getAddress();
+
+    var photoPreview = document.querySelector('.form__photo-container');
+    var images = photoPreview.querySelectorAll('img');
+    var avatarPreview = document.querySelectorAll('.notice__preview img');
+    var container = document.createElement('div');
+    var defaultAvatar = 'img/muffin.png';
+
+    container.style = 'z-index: 999; margin: 0 auto; text-align: center; background-color: tomato;';
+    container.style.position = 'fixed';
+    container.style.left = 0;
+    container.style.right = 0;
+    container.style.fontSize = '25px';
+    container.style.color = 'white';
+    container.textContent = SUCCESS_MESSAGE;
+    document.body.insertAdjacentElement('afterbegin', container);
+
+    window.imageInserting.avatar(defaultAvatar);
+    clearImages(images);
+
+    setTimeout(function () {
+      container.parentNode.removeChild(container);
+    }, 5000);
   };
 
   var getErrorMessage = function (message) {
@@ -74,9 +95,12 @@
     container.style.right = 0;
     container.style.fontSize = '25px';
     container.style.color = 'white';
-
     container.textContent = message;
     document.body.insertAdjacentElement('afterbegin', container);
+
+    setTimeout(function () {
+      container.parentNode.removeChild(container);
+    }, 5000);
   };
 
   var syncValues = function (element, value) {
@@ -89,6 +113,10 @@
 
   timeIn.addEventListener('change', function () {
     window.synchronizeFields(timeIn, timeOut, CHECK_TIMES, CHECK_TIMES, syncValues);
+  });
+
+  timeOut.addEventListener('change', function () {
+    window.synchronizeFields(timeOut, timeIn, CHECK_TIMES, CHECK_TIMES, syncValues);
   });
 
   typeHouseSelect.addEventListener('change', function () {

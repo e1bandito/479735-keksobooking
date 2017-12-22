@@ -14,7 +14,7 @@
   var avatarPreview = document.querySelector('.notice__preview img');
   var photoPreview = document.querySelector('.form__photo-container');
 
-  var imageInserting = {
+  window.imageInserting = {
     'avatar': function (imageSource) {
       avatarPreview.src = imageSource;
     },
@@ -40,7 +40,7 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        imageInserting[evt.target.id](reader.result);
+        window.imageInserting[evt.target.id](reader.result);
       });
 
       reader.readAsDataURL(file);

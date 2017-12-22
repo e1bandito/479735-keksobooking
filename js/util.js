@@ -10,6 +10,14 @@
       indentX: 40 / 2,
       indentY: 40
     },
+    getAddress: function () {
+      var mainPin = window.util.MAP.querySelector('.map__pin--main');
+      var address = document.querySelector('#address');
+      var left = parseInt(getComputedStyle(mainPin).getPropertyValue('left'), 10);
+      var top = parseInt(getComputedStyle(mainPin).getPropertyValue('top'), 10);
+
+      address.value = left + window.util.pinParams.indentX + ' ' + top;
+    },
     debounce: function (debouncedFunction) {
       var lastTimeout;
       if (lastTimeout) {
