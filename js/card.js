@@ -22,6 +22,7 @@
     if (closeButton.classList.contains('popup__close') && mapCardActive) {
       mapPinActive.classList.remove(MAP_PIN_ACTIVE);
       mapCardActive.classList.add('hidden');
+      closeButton.removeEventListener('click', onPopupClick);
     }
   };
 
@@ -32,16 +33,18 @@
     if (evt.keyCode === ESC_KEYCODE && mapCardActive) {
       activeElement.classList.remove(MAP_PIN_ACTIVE);
       map.removeChild(mapCardActive);
-      document.querySelector('.map__pins').removeEventListener('keydown', onPopupEscClose);
+      document.removeEventListener('keydown', onPopupEscClose);
     }
   };
 
   var onPopupEnterPress = function (evt) {
+    var closeButton = evt.target;
     var activeElement = document.querySelector('.popup__close');
     var mapPinActive = document.querySelector(MAP_PIN_ACTIVE_CLASS);
     if (activeElement === evt.target) {
       if (evt.keyCode === ENTER_KEYCODE) {
         mapPinActive.classList.remove(MAP_PIN_ACTIVE_CLASS);
+        closeButton.removeEventListener('keydown', onPopupEnterPress);
       }
     }
   };
@@ -58,16 +61,20 @@
     var cardDescription = card.querySelector('.map__card--description');
     var userAvatar = card.querySelector('.popup__avatar');
     var closeButton = card.querySelector('.popup__close');
+    var fragment = document.createDocumentFragment();
 
     while (cardFeatures.hasChildNodes()) {
       cardFeatures.removeChild(cardFeatures.lastChild);
     }
+
     for (i = 0; i < currentAdvert.offer.features.length; i++) {
       var li = document.createElement('li');
       var liClass = 'feature--' + currentAdvert.offer.features[i];
       li.classList.add('feature', liClass);
-      cardFeatures.appendChild(li);
+      fragment.appendChild(li);
     }
+
+    cardFeatures.appendChild(fragment);
 
     var getRoomsAndGuests = function () {
       var roomsDict = {
